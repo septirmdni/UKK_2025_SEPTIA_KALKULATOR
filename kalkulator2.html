@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Kalkulator</title>
+    <style>
+      /* Reset Margin dan Padding */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Body */
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+        margin: 0;
+      }
+
+      /* Calculator */
+      .calculator {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      #result {
+        width: 100%;
+        padding: 20px;
+        font-size: 2rem;
+        text-align: right;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      button {
+        padding: 20px;
+        font-size: 1.5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f1f1f1;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #ca7777;
+      }
+
+      button.operator {
+        background-color: palevioletred;
+        color: white;
+      }
+
+      button.operator:hover {
+        background-color: palevioletred;
+      }
+
+      button:active {
+        background-color: #d4d4d4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <h2>Kalkulator septia</h2>
+      <input type="text" id="result" disabled />
+      <div class="buttons">
+        <button class="btn" onclick="appendNumber(7)">7</button>
+        <button class="btn" onclick="appendNumber(8)">8</button>
+        <button class="btn" onclick="appendNumber(9)">9</button>
+        <button class="btn operator" onclick="setOperator('+')">+</button>
+
+        <button class="btn" onclick="appendNumber(4)">4</button>
+        <button class="btn" onclick="appendNumber(5)">5</button>
+        <button class="btn" onclick="appendNumber(6)">6</button>
+        <button class="btn operator" onclick="setOperator('-')">-</button>
+
+        <button class="btn" onclick="appendNumber(1)">1</button>
+        <button class="btn" onclick="appendNumber(2)">2</button>
+        <button class="btn" onclick="appendNumber(3)">3</button>
+        <button class="btn operator" onclick="setOperator('*')">*</button>
+
+        <button class="btn" onclick="appendNumber(0)">0</button>
+        <button class="btn" onclick="clearResult()">C</button>
+        <button class="btn" onclick="calculateResult()">=</button>
+        <button class="btn operator" onclick="setOperator('/')">/</button>
+      </div>
+    </div>
+
+    <script>
+      let currentInput = "";
+      let operator = null;
+      let firstOperand = null;
+      let currentOperation = ""; // This will store the full calculation as a string
+
+      function appendNumber(number) {
+        currentInput += number.toString();
+        document.getElementById("result").value = currentInput;
+      }
+
+      function setOperator(op) {
+        if (firstOperand === null) {
+          firstOperand = currentInput;
+          currentOperation += currentInput + op; // Add the current number and operator to the operation string
+          currentInput = "";
+        } else {
+          currentOperation += currentInput + op; // Add the current number and operator to the operation string
+          currentInput = "";
+        }
+        document.getElementById("result").value = currentOperation;
+      }
+
+      function calculateResult() {
+        currentOperation += currentInput; // Add the last input before calculating
+        try {
+          let result = eval(currentOperation); // Use eval to compute the result of the operation string
+          document.getElementById("result").value = result;
+          currentOperation = result.toString(); // Store the result as the current operation for further calculations
+          currentInput = "";
+        } catch (error) {
+          document.getElementById("result").value = "Error";
+          currentOperation = "";
+          currentInput = "";
+        }
+      }
+
+      function clearResult() {
+        currentInput = "";
+        firstOperand = null;
+        operator = null;
+        currentOperation = "";
+        document.getElementById("result").value = "";
+      }
+    </script>
+  </body>
+</html>
